@@ -186,7 +186,7 @@ TAGS_COUNT=$(echo "$TAGS_CURL"|jq -r '.tags[]'|grep -vi windows|wc -l)
 # Solved, don't use head with -o pipefail. Replaced head with sed.
 # https://stackoverflow.com/questions/19120263/why-exit-code-141-with-grep-q/19120674#19120674
 # TAGS=$(echo "$TAGS_CURL"|jq --arg TAGS_FILTER "$TAGS_FILTER" -r '.tags[]|select(.|contains($TAGS_FILTER))'|grep -vi windows|sort -r --version-sort|head -"$TAGS_LIMIT")
-TAGS_temp=$(echo "$TAGS_CURL"|jq --arg TAGS_FILTER "$TAGS_FILTER" -r '.tags[]|select(.|contains($TAGS_FILTER))'|grep -vi windows|sort -r --version-sort) 
+TAGS_temp=$(echo "$TAGS_CURL"|jq --arg TAGS_FILTER "$TAGS_FILTER" -r '.tags[]|select(.|test($TAGS_FILTER))'|grep -vi windows|sort -r --version-sort) 
 TAGS=$(echo "$TAGS_temp"|sed -n 1,"$TAGS_LIMIT"p)
 echo "Found Total Tags: $TAGS_COUNT"
 # Check if tags are not being filtered
